@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard prestataire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef2fb;
+            --surface: #ffffff;
+            --line: #d7deec;
+            --ink: #121a2d;
+            --muted: #647392;
+            --chip: #f2f5fc;
+            --btn: #121f43;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(920px 300px at 20% -20%, #fff 0%, transparent 60%),
+                linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+            min-height: 100vh;
+        }
+
+        .top {
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(8px);
+        }
+
+        .top-wrap {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .lead {
+            margin: 4px 0 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid #cfd8ea;
+            border-radius: 10px;
+            background: #fff;
+            color: #1d2a4a;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 9px 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .btn-dark {
+            border-color: var(--btn);
+            background: var(--btn);
+            color: #fff;
+        }
+
+        .btn-danger {
+            border-color: #f3c3ca;
+            color: #9e1f2f;
+            background: #fff5f6;
+        }
+
+        .page {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .flash {
+            border: 1px solid #d5dcef;
+            background: #f8faff;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #243356;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--surface);
+            padding: 14px;
+            box-shadow: 0 8px 24px rgba(11, 22, 53, 0.08);
+        }
+
+        .card p {
+            margin: 0;
+        }
+
+        .label {
+            color: #4e5d7d;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .value {
+            margin-top: 6px;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .panel {
+            margin-top: 14px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(11, 22, 53, 0.08);
+            overflow: hidden;
+        }
+
+        .panel-head {
+            border-bottom: 1px solid #e2e8f4;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 21px;
+            letter-spacing: -0.02em;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .select-field {
+            min-width: 200px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--chip);
+            padding: 8px 10px;
+            font-family: inherit;
+            color: #1f2b4a;
+            font-size: 14px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            padding: 0 12px 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 830px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #e7ecf5;
+            padding: 12px 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #5a6888;
+            font-weight: 700;
+        }
+
+        td {
+            font-size: 14px;
+            color: #1d2948;
+        }
+
+        .service-name {
+            font-weight: 700;
+        }
+
+        .tag {
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .published-yes {
+            color: #0a7d3a;
+            background: #dbf3e4;
+        }
+
+        .published-no {
+            color: #687391;
+            background: #edf1f8;
+        }
+
+        .status-waiting {
+            background: #edf1f8;
+            color: #3f4d6c;
+        }
+
+        .status-progress {
+            background: #111b3d;
+            color: #fff;
+        }
+
+        .status-done {
+            background: #daf5e4;
+            color: #0d7b3d;
+        }
+
+        .status-cancelled {
+            background: #fce2e5;
+            color: #a0212f;
+        }
+
+        .actions {
+            display: inline-flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .inline-form {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .empty {
+            padding: 26px 16px;
+            color: #566583;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 980px) {
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .top-wrap,
+            .page {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .select-field {
+                min-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top">
+        <div class="top-wrap">
+            <div>
+                <h1>Dashboard Prestataire</h1>
+                <p class="lead">{{ prestataire.nom_complet }} - {{ prestataire.nom_entreprise }}</p>
+            </div>
+            <div class="top-actions">
+                <a class="btn" href="{% url 'home' %}">Accueil public</a>
+                <a class="btn" href="{% url 'prestataire_profil' %}">Mon profil</a>
+                <a class="btn btn-dark" href="{% url 'service_ajouter' %}">Ajouter service</a>
+                <form method="post" action="{% url 'deconnexion' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Deconnexion</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <section class="cards">
+            <article class="card">
+                <p class="label">Services total</p>
+                <p class="value">{{ stats.services_total }}</p>
+            </article>
+            <article class="card">
+                <p class="label">Services publies</p>
+                <p class="value">{{ stats.services_publies }}</p>
+            </article>
+            <article class="card">
+                <p class="label">Demandes attente</p>
+                <p class="value">{{ stats.attente }}</p>
+            </article>
+            <article class="card">
+                <p class="label">Demandes en cours</p>
+                <p class="value">{{ stats.encours }}</p>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2 class="panel-title">Mes services</h2>
+                <a class="btn btn-dark" href="{% url 'service_ajouter' %}">Nouveau service</a>
+            </div>
+            {% if services %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Adresse</th>
+                                <th>Prix</th>
+                                <th>Publication</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in services %}
+                                <tr>
+                                    <td class="service-name">{{ service.nom_affichage }}</td>
+                                    <td>{{ service.adresse }}</td>
+                                    <td>{{ service.prix }} EUR</td>
+                                    <td>
+                                        {% if service.publier %}
+                                            <span class="tag published-yes">Publie</span>
+                                        {% else %}
+                                            <span class="tag published-no">Brouillon</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="actions">
+                                            <a class="btn" href="{% url 'service_modifier' service.id %}">Modifier</a>
+                                            <a class="btn btn-danger" href="{% url 'service_supprimer' service.id %}">Supprimer</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty">Aucun service pour le moment.</div>
+            {% endif %}
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2 class="panel-title">Demandes clients</h2>
+                <form method="get" class="filters">
+                    <select class="select-field" name="service" onchange="this.form.submit()">
+                        <option value="">Tous les services</option>
+                        {% for service in services %}
+                            <option value="{{ service.id }}"{% if selected_service == service.id|stringformat:'s' %} selected{% endif %}>
+                                {{ service.nom_affichage }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select class="select-field" name="status" onchange="this.form.submit()">
+                        <option value="">Tous les statuts</option>
+                        {% for status in status_options %}
+                            <option value="{{ status }}"{% if selected_status == status %} selected{% endif %}>{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            {% if demandes_rows %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service</th>
+                                <th>Client</th>
+                                <th>Contact</th>
+                                <th>Description</th>
+                                <th>Statut</th>
+                                <th>Gestion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in demandes_rows %}
+                                <tr>
+                                    <td>{{ row.demande.id }}</td>
+                                    <td class="service-name">{{ row.demande.service.nom_affichage }}</td>
+                                    <td>{{ row.demande.nom_client }}</td>
+                                    <td>
+                                        <a href="tel:{{ row.demande.tel_client }}">{{ row.demande.tel_client }}</a>
+                                    </td>
+                                    <td>{{ row.demande.description|default:"-"|truncatewords:14 }}</td>
+                                    <td>
+                                        <span class="tag {{ row.status_class }}">{{ row.status }}</span>
+                                    </td>
+                                    <td>
+                                        <form class="inline-form" method="post" action="{% url 'demande_modifier_statut' row.demande.id %}">
+                                            {% csrf_token %}
+                                            <select class="select-field" name="status">
+                                                {% for status in status_options %}
+                                                    <option value="{{ status }}"{% if row.status == status %} selected{% endif %}>{{ status }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button class="btn btn-dark" type="submit">Mettre a jour</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty">Aucune demande client selon les filtres actuels.</div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

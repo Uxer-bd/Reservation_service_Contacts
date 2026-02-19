@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-top: #f6f8ff;
+            --bg-bottom: #edf1f8;
+            --surface: #ffffff;
+            --line: #d8deea;
+            --ink: #101726;
+            --muted: #5a667f;
+            --chip: #f1f4fb;
+            --shadow: 0 10px 28px rgba(11, 22, 53, 0.08);
+            --wait-bg: #f7ecc7;
+            --wait-ink: #b77800;
+            --progress-bg: #d8e6ff;
+            --progress-ink: #1558e8;
+            --done-bg: #d8f4e4;
+            --done-ink: #09984a;
+            --cancel-bg: #f8dddd;
+            --cancel-ink: #cc1f2e;
+            --btn: #0d1531;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(900px 380px at 20% -20%, #ffffff 0%, transparent 60%),
+                linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            min-height: 100vh;
+        }
+
+        .top {
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(6px);
+        }
+
+        .top-wrap {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 42px;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 22px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #37415c;
+        }
+
+        .page {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 26px 20px 38px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            min-height: 128px;
+        }
+
+        .card-title {
+            margin: 0 0 8px;
+            color: #2f3b57;
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .card-count {
+            margin: 0;
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .wait {
+            background: var(--wait-bg);
+            color: var(--wait-ink);
+        }
+
+        .progress {
+            background: var(--progress-bg);
+            color: var(--progress-ink);
+        }
+
+        .done {
+            background: var(--done-bg);
+            color: var(--done-ink);
+        }
+
+        .cancel {
+            background: var(--cancel-bg);
+            color: var(--cancel-ink);
+        }
+
+        .panel {
+            margin-top: 18px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-head {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: -0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .select-field {
+            min-width: 220px;
+            border: 1px solid var(--line);
+            background: var(--chip);
+            border-radius: 12px;
+            padding: 9px 12px;
+            color: #1b263f;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            padding: 0 10px 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e6ebf3;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        thead th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #4f5a74;
+            font-weight: 700;
+            background: #f8fafe;
+            position: sticky;
+            top: 0;
+        }
+
+        tbody td {
+            font-size: 16px;
+            color: #1b253c;
+        }
+
+        .service-name {
+            font-weight: 700;
+        }
+
+        .contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2a3654;
+            text-decoration: none;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1;
+            border: 1px solid transparent;
+        }
+
+        .priority-high {
+            background: #fce1e5;
+            color: #bf1f33;
+            border-color: #f7c7cf;
+        }
+
+        .priority-medium {
+            background: #eef1f8;
+            color: #2d3650;
+            border-color: #dde3ef;
+        }
+
+        .priority-low {
+            background: #f5f8ef;
+            color: #4a6b1d;
+            border-color: #dfe9cd;
+        }
+
+        .status-waiting {
+            background: #eef0f5;
+            color: #3d4964;
+        }
+
+        .status-progress {
+            background: #0c1631;
+            color: #fff;
+        }
+
+        .status-done {
+            background: #d8f4e4;
+            color: #067a3a;
+        }
+
+        .status-cancelled {
+            background: #f8dddd;
+            color: #b31f2f;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #cdd6e5;
+            color: #17223d;
+            text-decoration: none;
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            background: #fff;
+        }
+
+        .btn-link:hover {
+            border-color: #aebad1;
+            background: #f9fbff;
+        }
+
+        .empty {
+            padding: 36px 20px 40px;
+            text-align: center;
+            color: #53607c;
+        }
+
+        .empty h3 {
+            margin: 0 0 6px;
+            font-size: 24px;
+            color: #1e2b49;
+        }
+
+        @media (max-width: 1000px) {
+            .title {
+                font-size: 31px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .panel-title {
+                font-size: 23px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-wrap,
+            .page {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .card-title {
+                font-size: 19px;
+            }
+
+            .card-count {
+                font-size: 30px;
+            }
+
+            .select-field {
+                min-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top">
+        <div class="top-wrap">
+            <div>
+                <h1 class="title">Dashboard Manager</h1>
+                <p class="subtitle">Gestion des demandes de services</p>
+            </div>
+            <div class="actions" aria-hidden="true">
+                <span class="icon-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5" />
+                        <path d="M9 17a3 3 0 0 0 6 0" />
+                    </svg>
+                </span>
+                <span class="icon-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="cards">
+            <article class="card">
+                <div>
+                    <p class="card-title">En attente</p>
+                    <p class="card-count">{{ stats.waiting }}</p>
+                </div>
+                <div class="card-icon wait">!</div>
+            </article>
+            <article class="card">
+                <div>
+                    <p class="card-title">En cours</p>
+                    <p class="card-count">{{ stats.in_progress }}</p>
+                </div>
+                <div class="card-icon progress">i</div>
+            </article>
+            <article class="card">
+                <div>
+                    <p class="card-title">Terminees</p>
+                    <p class="card-count">{{ stats.done }}</p>
+                </div>
+                <div class="card-icon done">&#10003;</div>
+            </article>
+            <article class="card">
+                <div>
+                    <p class="card-title">Annulees</p>
+                    <p class="card-count">{{ stats.cancelled }}</p>
+                </div>
+                <div class="card-icon cancel">&#10005;</div>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2 class="panel-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 4h18l-7 8v7l-4 1v-8z" />
+                    </svg>
+                    Demandes de service
+                </h2>
+                <form method="get" class="filters">
+                    <select class="select-field" name="service" onchange="this.form.submit()">
+                        <option value="">Tous les services</option>
+                        {% for service in service_options %}
+                            <option value="{{ service.id }}"{% if selected_service == service.id|stringformat:'s' %} selected{% endif %}>
+                                {{ service.nom_affichage }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select class="select-field" name="status" onchange="this.form.submit()">
+                        <option value="">Tous les statuts</option>
+                        {% for status in status_options %}
+                            <option value="{{ status }}"{% if selected_status == status %} selected{% endif %}>{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            {% if dashboard_rows %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Client</th>
+                                <th>Contact</th>
+                                <th>Date</th>
+                                <th>Priorite</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in dashboard_rows %}
+                                <tr>
+                                    <td class="service-name">{{ row.reservation.service.nom_affichage }}</td>
+                                    <td>{{ row.reservation.nom_client }}</td>
+                                    <td>
+                                        <a class="contact" href="tel:{{ row.reservation.tel_client }}">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.9 19.9 0 0 1-8.7-3.1 19.3 19.3 0 0 1-6-6A19.9 19.9 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.5a16 16 0 0 0 6.5 6.5l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0 1 22 16.9z" />
+                                            </svg>
+                                            {{ row.reservation.tel_client }}
+                                        </a>
+                                    </td>
+                                    <td>{{ row.reservation.date_creation|date:"d/m/Y H:i"|default:"Non renseignee" }}</td>
+                                    <td><span class="tag {{ row.priority_class }}">{{ row.priority }}</span></td>
+                                    <td><span class="tag {{ row.status_class }}">{{ row.status }}</span></td>
+                                    <td>
+                                        <a class="btn-link" href="{% url 'detail_service' row.reservation.service.id %}">
+                                            Voir details
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty">
+                    <h3>Aucune demande trouvee</h3>
+                    <p>Change les filtres ou attends de nouvelles reservations.</p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Espace connexion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef2fb;
+            --surface: #ffffff;
+            --line: #d6ddec;
+            --ink: #121a2d;
+            --muted: #606e8e;
+            --primary: #0f1c3d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            color: var(--ink);
+            min-height: 100vh;
+            background:
+                radial-gradient(760px 300px at 20% -20%, #fff 0%, transparent 60%),
+                linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+            display: grid;
+            place-items: center;
+            padding: 18px;
+        }
+
+        .card {
+            width: min(500px, 100%);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--surface);
+            padding: 24px 22px;
+            box-shadow: 0 18px 40px rgba(12, 22, 52, 0.1);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+            letter-spacing: -0.03em;
+        }
+
+        .lead {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .flash {
+            border: 1px solid #d8dfef;
+            background: #f6f8fe;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #243153;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #cad4e8;
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #f9fbff;
+            color: var(--ink);
+        }
+
+        input:focus {
+            outline: 2px solid rgba(18, 38, 83, 0.15);
+            border-color: #4f6aaa;
+            background: #fff;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding: 0;
+            list-style: none;
+            color: #b72535;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .btn {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 800;
+            font-size: 15px;
+            color: #fff;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .links {
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #26345c;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <section class="card">
+        <h1>Espace connexion</h1>
+        <p class="lead">Connectez-vous pour gerer vos services et demandes clients.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+
+            <div class="field">
+                <label for="{{ form.username.id_for_label }}">Nom utilisateur</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div class="field">
+                <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+            {{ form.non_field_errors }}
+
+            <button class="btn" type="submit">Se connecter</button>
+        </form>
+
+        <div class="links">
+            <a href="{% url 'home' %}">Retour a l'accueil</a>
+        </div>
+    </section>
+</body>
+</html>

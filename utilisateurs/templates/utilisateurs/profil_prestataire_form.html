@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profil prestataire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef2fb;
+            --surface: #ffffff;
+            --line: #d8deec;
+            --ink: #111a2f;
+            --muted: #5f6f92;
+            --primary: #121f43;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(760px 280px at 20% -20%, #fff 0%, transparent 60%),
+                linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+            color: var(--ink);
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            padding: 18px;
+        }
+
+        .card {
+            width: min(760px, 100%);
+            margin: 0 auto;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--surface);
+            padding: 20px;
+            box-shadow: 0 14px 34px rgba(12, 22, 52, 0.09);
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .lead {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #cad4e8;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #f8faff;
+            color: #172342;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding: 0;
+            list-style: none;
+            color: #b72535;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid #ccd5e8;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #1e2a4a;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <section class="card">
+        {% if has_profile %}
+            <h1>Modifier mon profil prestataire</h1>
+            <p class="lead">Mettez a jour vos informations entreprise.</p>
+        {% else %}
+            <h1>Creer mon profil prestataire</h1>
+            <p class="lead">Ce profil est necessaire pour gerer vos services et demandes clients.</p>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="field">
+                <label for="{{ form.nom_entreprise.id_for_label }}">Nom entreprise</label>
+                {{ form.nom_entreprise }}
+                {{ form.nom_entreprise.errors }}
+            </div>
+            <div class="field">
+                <label for="{{ form.adresse.id_for_label }}">Adresse</label>
+                {{ form.adresse }}
+                {{ form.adresse.errors }}
+            </div>
+            <div class="field">
+                <label for="{{ form.telephone.id_for_label }}">Telephone</label>
+                {{ form.telephone }}
+                {{ form.telephone.errors }}
+            </div>
+            <div class="field">
+                <label for="{{ form.photo_profil.id_for_label }}">Photo profil</label>
+                {{ form.photo_profil }}
+                {{ form.photo_profil.errors }}
+            </div>
+
+            {{ form.non_field_errors }}
+
+            <div class="actions">
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+                <a class="btn" href="{% url 'dashboard_prestataire' %}">Retour dashboard</a>
+                <a class="btn" href="{% url 'home' %}">Accueil public</a>
+            </div>
+        </form>
+    </section>
+</body>
+</html>

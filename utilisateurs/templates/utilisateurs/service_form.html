@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #eef2fb;
+            --surface: #ffffff;
+            --line: #d7deec;
+            --ink: #121a2d;
+            --muted: #647392;
+            --primary: #121f43;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            color: var(--ink);
+            min-height: 100vh;
+            background:
+                radial-gradient(760px 280px at 20% -20%, #fff 0%, transparent 60%),
+                linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+            padding: 18px;
+        }
+
+        .card {
+            width: min(780px, 100%);
+            margin: 0 auto;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--surface);
+            padding: 20px;
+            box-shadow: 0 14px 34px rgba(12, 22, 52, 0.09);
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 29px;
+            letter-spacing: -0.02em;
+        }
+
+        .lead {
+            margin: 0 0 16px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #cad4e8;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #172342;
+            background: #f8faff;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            transform: translateY(1px);
+        }
+
+        .checkbox-wrap {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #1d2a4a;
+            border: 1px solid #cad4e8;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #f8faff;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding: 0;
+            list-style: none;
+            color: #b72535;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid #ccd5e8;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            color: #1e2a4a;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <section class="card">
+        <h1>{{ title }}</h1>
+        <p class="lead">Renseignez les informations de votre service.</p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="field">
+                <label for="{{ form.type_service.id_for_label }}">Type de service</label>
+                {{ form.type_service }}
+                {{ form.type_service.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.prix.id_for_label }}">Prix</label>
+                {{ form.prix }}
+                {{ form.prix.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.adresse.id_for_label }}">Adresse</label>
+                {{ form.adresse }}
+                {{ form.adresse.errors }}
+            </div>
+
+            <div class="field">
+                <label for="{{ form.image.id_for_label }}">Image</label>
+                {{ form.image }}
+                {{ form.image.errors }}
+            </div>
+
+            <div class="field">
+                <label>Publication</label>
+                <div class="checkbox-wrap">
+                    {{ form.publier }} Publier ce service sur la page d'accueil
+                </div>
+                {{ form.publier.errors }}
+            </div>
+
+            {{ form.non_field_errors }}
+
+            <div class="actions">
+                <button class="btn btn-primary" type="submit">{{ submit_label }}</button>
+                <a class="btn" href="{% url 'dashboard_prestataire' %}">Annuler</a>
+            </div>
+        </form>
+    </section>
+</body>
+</html>
